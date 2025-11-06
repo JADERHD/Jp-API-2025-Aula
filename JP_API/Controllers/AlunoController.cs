@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Modelo.Aplication.Interface;
 using Modelo.Domain;
 
 namespace JP_API.Controllers
@@ -8,9 +9,11 @@ namespace JP_API.Controllers
     [ApiController]
     public class AlunoController : ControllerBase
     {
-        public AlunoController()
+        private readonly IAlunoApplication _alunoApplication;
+
+        public AlunoController(IAlunoApplication alunoRepositorio)
         {
-            
+            _alunoApplication = alunoRepositorio;
         }
 
         [HttpGet("BuscarDadosAluno/{id}")]
@@ -18,9 +21,7 @@ namespace JP_API.Controllers
         {
             try
             {
-                Aluno aluno = new Aluno();
-                aluno.Id = id;
-                aluno.Nome = "Katia";
+                Aluno aluno = await _alunoApplication.BuscarAluno(id);
                 return Ok(aluno);
             }
             catch (Exception ex)

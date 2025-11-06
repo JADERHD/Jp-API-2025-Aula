@@ -1,11 +1,25 @@
 
+using Modelo.Aplication;
+using Modelo.Aplication.Interface;
+using Modelo.Infra;
+using Modelo.Infra.Repositorio;
+using Modelo.Infra.Repositorio.interfaces;
+
 namespace JP_API
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+          
             var builder = WebApplication.CreateBuilder(args);
+
+            DbConnectionFactory dbConnectionFactory = new DbConnectionFactory(builder.Configuration);
+            dbConnectionFactory.CriarTabelas();
+
+            builder.Services.AddSingleton(dbConnectionFactory);
+            builder.Services.AddScoped<IAlunoRepositorio, AlunoRepositorio>();
+            builder.Services.AddScoped<IAlunoApplication, AlunoApplication>();
 
             // Add services to the container.
 
