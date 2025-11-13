@@ -20,6 +20,7 @@ namespace JP_API
             builder.Services.AddSingleton(dbConnectionFactory);
             builder.Services.AddScoped<IAlunoRepositorio, AlunoRepositorio>();
             builder.Services.AddScoped<IAlunoApplication, AlunoApplication>();
+            builder.Services.AddHttpClient<ICepService, CepService>();
 
             // Add services to the container.
 

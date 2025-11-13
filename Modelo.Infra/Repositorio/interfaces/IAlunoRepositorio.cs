@@ -4,16 +4,12 @@ namespace Modelo.Infra.Repositorio.interfaces
 {
     public interface IAlunoRepositorio
     {
-        IEnumerable<Aluno> GetAlunos();
-
-        IEnumerable<Aluno> GetAlunosComNome(string buscar);
-
         Task<Aluno> BuscarAluno(int ID);
 
-        void NovoAluno(Aluno aluno);
+        Task AdicionarAluno(Aluno aluno);
 
-        void AtualizarAluno(Aluno aluno);
+        Task<Aluno> AtualizarAluno(Aluno aluno);
 
-        void Excluir(Aluno aluno);
+        Task<bool> Excluir(int ID);
     }
 }

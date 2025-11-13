@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Modelo.Domain;
+﻿using Modelo.Domain;
 
 namespace Modelo.Aplication.Interface
 {
     public interface IAlunoApplication
     {
         Task<Aluno> BuscarAluno(int ID);
+
+        Task AdicionarAluno(Aluno aluno);
+
+        Task<Aluno> AtualizarAluno(Aluno aluno);
+
+        Task<bool> Excluir(int ID);
     }
 }

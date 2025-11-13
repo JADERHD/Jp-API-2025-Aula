@@ -13,39 +13,45 @@ namespace Modelo.Infra.Repositorio
             _dbConnectionFactory = dbConnectionFactory;
         }
 
-        public void AtualizarAluno(Aluno aluno)
-        {
-         
-        }
-
-        public void Excluir(Aluno aluno)
-        {
-        
-        }
-
         public async Task<Aluno> BuscarAluno(int ID)
         {
             using var connnection = _dbConnectionFactory.CreateConnection();
 
-            string sql = "select * from Aluno where Id = @Id";
+            string sql = "select * from Aluno where Id = @Id;";
 
             var aluno = await connnection.QueryFirstOrDefaultAsync<Aluno>(sql, new { Id = ID });
 
             return aluno;
         }
 
-        public IEnumerable<Aluno> GetAlunos()
+        public async Task AdicionarAluno(Aluno aluno)
         {
-           return null;
+            using var connnection = _dbConnectionFactory.CreateConnection();
+
+            string sql = "insert into Aluno (Matricula, Nome, CEP, Logradouro, Cidade, Bairro) VALUES (@Matricula, @Nome, @CEP, @Logradouro, @Cidade, @Bairro); SELECT SCOPE_IDENTITY();";
+
+            int ID = await connnection.QueryFirstOrDefaultAsync<int>(sql, aluno);
+            aluno.Id = ID;
         }
 
-        public void NovoAluno(Aluno aluno)
+        public async Task<Aluno> AtualizarAluno(Aluno aluno)
         {
+            using var connnection = _dbConnectionFactory.CreateConnection();
+
+            string sql = "Update Aluno set Matricula = @Matricula, Nome = @Nome, CEP = @CEP, Logradouro = @Logradouro, Cidade = @Cidade, Bairro = @Bairro WHERE Id = @Id; select * from Aluno where Id = @Id;";
+
+            Aluno aluno1 = await connnection.QueryFirstOrDefaultAsync<Aluno>(sql, aluno);
+            return aluno1;
         }
 
-        public IEnumerable<Aluno> GetAlunosComNome(string buscar)
+        public async Task<bool> Excluir(int ID)
         {
-            return null;
+            using var connnection = _dbConnectionFactory.CreateConnection();
+
+            string sql = "DELETE FROM Aluno where Id = @Id;";
+
+            var ret = await connnection.ExecuteAsync(sql, new { Id = ID });
+            return ret != 0;
         }
     }
 }
