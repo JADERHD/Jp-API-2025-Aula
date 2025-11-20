@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Runtime.InteropServices;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Modelo.Aplication.Interface;
 using Modelo.Domain;
@@ -24,11 +27,13 @@ namespace JP_API.Controllers
             try
             {
                 Aluno aluno = await _alunoApplication.BuscarAluno(id);
-                return Ok(aluno);
+                Retorno<Aluno> retorno = new Retorno<Aluno>(aluno, true, "Aluno retornado com sucesso!", 200);
+                return Ok(retorno);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                Retorno retorno = new Retorno(false, "Erro ao retornar os alunos!", 400);
+                return BadRequest(retorno);
             }
 
         }
@@ -39,11 +44,13 @@ namespace JP_API.Controllers
             try
             {
                 await _alunoApplication.AdicionarAluno(aluno);
-                return Ok(aluno);
+                Retorno<Aluno> retorno = new Retorno<Aluno>(aluno, true, "Aluno criado com sucesso!", 200);
+                return Ok(retorno);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                Retorno retorno = new Retorno(false, "Erro ao adicionar o aluno!", 400);
+                return BadRequest(retorno);
             }
 
         }
@@ -53,11 +60,14 @@ namespace JP_API.Controllers
             try
             {
                 var aluno1 = await _alunoApplication.AtualizarAluno(aluno);
-                return Ok(aluno1);
+                Retorno<Aluno> retorno = new Retorno<Aluno>(aluno1, true, "Aluno editado com sucesso!", 200);
+                return Ok(retorno);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+
+                Retorno retorno = new Retorno(false, "Erro ao editar o aluno!", 400);
+                return BadRequest(retorno);
             }
 
         }
@@ -68,11 +78,15 @@ namespace JP_API.Controllers
             try
             {
                 bool res = await _alunoApplication.Excluir(id);
-                return Ok(new { FoiExcluido = res });
+
+                var cont = (new { FoiExcluido = res });
+                Retorno<object> retorno = new Retorno<object>( cont, true, "Aluno excluido com sucesso!", 200);
+                return Ok(retorno);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                Retorno retorno = new Retorno(false, "Erro ao excluido o aluno!", 400);
+                return BadRequest(retorno);
             }
 
         }
@@ -86,11 +100,13 @@ namespace JP_API.Controllers
             try
             {
                 var endereco = await _cepService.BuscarfEnderecoPorCep(cep);
-                 return Ok(endereco);
+                Retorno<Endereco> retorno = new Retorno<Endereco>(endereco, true, "Busca Realizada com Sucesso", 200);
+                return Ok(endereco);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                Retorno retorno = new Retorno(false, "Erro ao buscar CEP", 400);
+                return BadRequest(retorno);
             }
 
         }
