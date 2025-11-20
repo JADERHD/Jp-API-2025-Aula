@@ -101,7 +101,7 @@ namespace JP_API.Controllers
             {
                 var endereco = await _cepService.BuscarfEnderecoPorCep(cep);
                 Retorno<Endereco> retorno = new Retorno<Endereco>(endereco, true, "Busca Realizada com Sucesso", 200);
-                return Ok(endereco);
+                return Ok(retorno);
             }
             catch (Exception ex)
             {
